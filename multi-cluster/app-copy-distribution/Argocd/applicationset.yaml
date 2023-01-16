@@ -7,10 +7,10 @@ spec:
   generators:
   - list:
       elements:
-      - cluster: cluster-cce-east
-        url: "https://kubernetes.default.svc"
-      - cluster: cluster-cce-west
-        url: "https://kubernetes.default.svc"
+      - cluster: cluster-cce-master             ## gitops-master-cluster 
+        url: "https://119.13.89.23:5443"  
+      - cluster: cluster-cce-east-member        ## gitops-member-cluster 
+        url: "https://190.92.247.23:5443"
   template:
     metadata:
       name: '{{cluster}}-UserApp'
