@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: UserApp
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: cluster-cce-east
+        url: "https://kubernetes.default.svc"
+      - cluster: cluster-cce-west
+        url: "https://kubernetes.default.svc"
+  template:
+    metadata:
+      name: '{{cluster}}-UserApp'
+      namespace: userapp
+    spec:
+      project: default
+      source:
+        repoURL: "https://github.com/wangyuan249/my-gitops-comparison.git"
+        targetRevision: HEAD
+        path: "multi-cluster/app-copy-distribution/argocd"
+        helm:
+          valueFiles:
+            - "values.yaml"
+      destination:
+        server: {{url}}
+        namespace: userapp
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
