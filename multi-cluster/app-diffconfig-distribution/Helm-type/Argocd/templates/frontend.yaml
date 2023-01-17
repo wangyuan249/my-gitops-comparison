@@ -17,9 +17,27 @@ spec:
       containers:
       - name: react-frontend
         image: "{{ .Values.frontend.image }}:{{ .Values.frontend.tag }}"
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000
+        - name: http
+          containerPort: 9898
+          protocol: TCP
+        - name: http-metrics
+          containerPort: 9797
+          protocol: TCP
+        - name: grpc
+          containerPort: 9999
+          protocol: TCP
+        command:
+        - ./podinfo
+        - --port=9898
+        - --port-metrics=9797
+        - --grpc-port=9999
+        - --grpc-service-name=podinfo
+        - --level=info
+        - --random-delay=false
+        - --random-error=false
         env:
-        - name: REACT_APP_NAMESPACES
-          value: {{ .Release.Namespace }}
+        - name: PODINFO_UI_COLOR
+          value: {{ .Values.frontend.color }}
+
