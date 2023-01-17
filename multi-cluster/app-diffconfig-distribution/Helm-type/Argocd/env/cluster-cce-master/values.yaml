@@ -1,0 +1,4 @@
+frontend:
+  image: ghcr.io/stefanprodan/podinfo
+  tag: 6.2.1
+  color: "#34577c"
